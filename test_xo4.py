@@ -14,7 +14,7 @@ class TestXO(object):
                                  (['-', '-', '-', '-', 'x', 'x', '-', '-', '-']),
                                  (['x', 'x', 'o', 'o', 'x', 'o', 'o', 'o', 'x'])
                              ])
-    def test_prepare_board_for_display(self, par_board):
+    def test_is_board_prepared_for_display(self, par_board):
         assert xo4_fcn.prepare_board_for_display(par_board) == 'Koordinate su \n 1|2|3 \n 4|5|6 \n 7|8|9\n' + \
                "--------------\n" + \
                par_board[0] + '|' + par_board[1] + '|' + par_board[2] + \
@@ -34,111 +34,68 @@ class TestXO(object):
         assert xo4_fcn.switch_player('x') == 'o'
         assert xo4_fcn.switch_player('o') == 'x'
 
-    @pytest.mark.parametrize('par_board',
+    @pytest.mark.parametrize(('par_board', 'expectation'),
                              [
-                                 (['x', 'x', 'x', '-', '-', '-', '-', '-', '-']),
-                                 (['-', '-', '-', 'x', 'x', 'x', '-', '-', '-']),
-                                 (['-', '-', '-', '-', '-', '-', 'x', 'x', 'x'])
+                                 (['x', 'x', 'x', '-', '-', '-', '-', '-', '-'], 'x'),
+                                 (['-', '-', '-', 'x', 'x', 'x', '-', '-', '-'], 'x'),
+                                 (['-', '-', '-', '-', '-', '-', 'x', 'x', 'x'], 'x'),
+                                 (['o', 'x', 'x', '-', '-', '-', '-', '-', '-'], None),
+                                 (['-', '-', '-', '-', 'x', 'x', '-', '-', '-'], None),
+                                 (['x', 'x', 'o', 'o', 'x', 'o', 'o', 'x', 'x'], None)
 
                              ])
-    def test_winner_by_rows(self, par_board):
+    def test_winner_by_rows(self, par_board, expectation):
         winner = xo4_fcn.winner_by_rows(par_board)
-        assert winner == 'x'
+        assert winner == expectation
 
-    @pytest.mark.parametrize('par_board',
+    @pytest.mark.parametrize(('par_board', 'expectation'),
                              [
-                                 (['o', 'x', 'x', '-', '-', '-', '-', '-', '-']),
-                                 (['-', '-', '-', '-', 'x', 'x', '-', '-', '-']),
-                                 (['x', 'x', 'o', 'o', 'x', 'o', 'o', 'x', 'x'])
+                                 (['x', '-', '-', 'x', '-', '-', 'x', '-', '-'], 'x'),
+                                 (['o', 'x', '-', 'o', 'x', '-', '-', 'x', '-'], 'x'),
+                                 (['o', 'x', 'x', 'x', 'o', 'x', 'x', 'o', 'x'], 'x'),
+                                 (['o', 'x', 'x', '-', '-', '-', '-', '-', '-'], None),
+                                 (['-', '-', '-', '-', 'x', 'x', '-', '-', '-'], None),
+                                 (['x', 'x', 'o', 'o', 'x', 'o', 'o', 'o', 'x'], None)
+
 
                              ])
-    def test_no_winner_by_rows(self, par_board):
-        winner = xo4_fcn.winner_by_rows(par_board)
-        assert winner is None
-
-    @pytest.mark.parametrize('par_board',
-                             [
-                                 (['x', '-', '-', 'x', '-', '-', 'x', '-', '-']),
-                                 (['o', 'x', '-', 'o', 'x', '-', '-', 'x', '-']),
-                                 (['o', 'x', 'x', 'x', 'o', 'x', 'x', 'o', 'x'])
-
-                             ])
-    def test_winner_by_columns(self, par_board):
+    def test_winner_by_columns(self, par_board, expectation):
         winner = xo4_fcn.winner_by_columns(par_board)
-        assert winner == 'x'
+        assert winner == expectation
 
-    @pytest.mark.parametrize('par_board',
+    @pytest.mark.parametrize(('par_board', 'expectation'),
                              [
-                                 (['o', 'x', 'x', '-', '-', '-', '-', '-', '-']),
-                                 (['-', '-', '-', '-', 'x', 'x', '-', '-', '-']),
-                                 (['x', 'x', 'o', 'o', 'x', 'o', 'o', 'o', 'x'])
+                                 (['o', '-', '-', '-', 'o', '-', '-', '-', 'o'], 'o'),
+                                 (['x', 'o', 'o', 'o', 'o', 'x', 'o', 'x', 'x'], 'o'),
+                                 (['o', 'x', 'x', '-', '-', '-', '-', '-', '-'], None),
+                                 (['-', '-', '-', '-', 'x', 'x', '-', '-', '-'], None),
+                                 (['o', 'x', 'o', 'o', 'x', 'o', 'o', 'o', 'x'], None)
 
                              ])
-    def test_no_winner_by_columns(self, par_board):
-        winner = xo4_fcn.winner_by_columns(par_board)
-        assert winner is None
-
-    @pytest.mark.parametrize('par_board',
-                             [
-                                 (['o', '-', '-', '-', 'o', '-', '-', '-', 'o']),
-                                 (['x', 'o', 'o', 'o', 'o', 'x', 'o', 'x', 'x'])
-                             ])
-    def test_winner_by_diagonals(self, par_board):
+    def test_winner_by_diagonals(self, par_board, expectation):
         winner = xo4_fcn.winner_by_diagonals(par_board)
-        assert winner == 'o'
+        assert winner == expectation
 
-    @pytest.mark.parametrize('par_board',
+    @pytest.mark.parametrize(('par_board', 'expectation'),
                              [
-                                 (['o', 'x', 'x', '-', '-', '-', '-', '-', '-']),
-                                 (['-', '-', '-', '-', 'x', 'x', '-', '-', '-']),
-                                 (['o', 'x', 'o', 'o', 'x', 'o', 'o', 'o', 'x'])
+                                 (['x', 'x', 'x', '-', '-', '-', '-', '-', '-'], 'x'),
+                                 (['-', '-', '-', 'x', 'x', 'x', '-', '-', '-'], 'x'),
+                                 (['x', 'x', 'o', 'o', 'x', 'o', 'x', 'x', 'x'], 'x'),
+                                 (['x', '-', '-', 'x', '-', '-', 'x', '-', '-'], 'x'),
+                                 (['o', 'x', '-', 'o', 'x', '-', '-', 'x', '-'], 'x'),
+                                 (['o', 'x', 'x', 'x', 'o', 'x', 'x', 'o', 'x'], 'x'),
+                                 (['o', '-', '-', '-', 'o', '-', '-', '-', 'o'], 'o'),
+                                 (['x', 'o', 'o', 'o', 'o', 'x', 'o', 'x', 'x'], 'o'),
+                                 (['o', 'x', 'x', '-', '-', '-', '-', '-', '-'], None),
+                                 (['-', '-', '-', '-', 'x', 'x', '-', '-', '-'], None),
+                                 (['o', 'x', 'o', 'o', 'x', 'o', 'x', 'o', 'x'], None)
 
                              ])
-    def test_no_winner_by_diagonals(self, par_board):
-        winner = xo4_fcn.winner_by_diagonals(par_board)
-        assert winner is None
-
-    @pytest.mark.parametrize('par_board',
-                             [
-                                 (['x', 'x', 'x', '-', '-', '-', '-', '-', '-']),
-                                 (['-', '-', '-', 'x', 'x', 'x', '-', '-', '-']),
-                                 (['x', 'x', 'o', 'o', 'x', 'o', 'x', 'x', 'x'])
-
-                             ])
-    def test_get_winner_rows(self, par_board):
+    def test_get_winner(self, par_board, expectation):
         winner = xo4_fcn.get_winner(par_board)
-        assert winner == 'x'
+        assert winner == expectation
 
-    @pytest.mark.parametrize('par_board',
-                             [
-                                 (['x', '-', '-', 'x', '-', '-', 'x', '-', '-']),
-                                 (['o', 'x', '-', 'o', 'x', '-', '-', 'x', '-']),
-                                 (['o', 'x', 'x', 'x', 'o', 'x', 'x', 'o', 'x'])
 
-                             ])
-    def test_get_winner_columns(self, par_board):
-        winner = xo4_fcn.get_winner(par_board)
-        assert winner == 'x'
-
-    @pytest.mark.parametrize('par_board',
-                             [
-                                 (['o', '-', '-', '-', 'o', '-', '-', '-', 'o']),
-                                 (['x', 'o', 'o', 'o', 'o', 'x', 'o', 'x', 'x'])
-                             ])
-    def test_get_winner_diagonals(self, par_board):
-        winner = xo4_fcn.get_winner(par_board)
-        assert winner == 'o'
-
-    @pytest.mark.parametrize('par_board',
-                             [
-                                 (['o', 'x', 'x', '-', '-', '-', '-', '-', '-']),
-                                 (['-', '-', '-', '-', 'x', 'x', '-', '-', '-']),
-                                 (['o', 'x', 'o', 'o', 'x', 'o', 'x', 'o', 'x'])
-
-                             ])
-    def test_get_winner_none(self, par_board):
-        winner = xo4_fcn.get_winner(par_board)
-        assert winner is None
 
     @pytest.mark.parametrize('par_board',
                              [

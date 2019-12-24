@@ -1,16 +1,16 @@
 def create_board():
-    board = ['-', '-', '-',
-             '-', '-', '-',
-             '-', '-', '-']
-    return board
+
+    return ['-', '-', '-',
+            '-', '-', '-',
+            '-', '-', '-']
 
 
 def prepare_board_for_display(board):
-    display_board_string = 'Koordinate su \n 1|2|3 \n 4|5|6 \n 7|8|9\n' + "--------------\n" +\
+
+    return 'Koordinate su \n 1|2|3 \n 4|5|6 \n 7|8|9\n' + "--------------\n" +\
                             board[0] + '|' + board[1] + '|' + board[2] + "\n" + \
                             board[3] + '|' + board[4] + '|' + board[5] + "\n" +\
                             board[6] + '|' + board[7] + '|' + board[8] + "\n"
-    return display_board_string
 
 
 def read_position(board):
