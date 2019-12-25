@@ -41,7 +41,8 @@ class TestXO(object):
                                  (['-', '-', '-', '-', '-', '-', 'x', 'x', 'x'], 'x'),
                                  (['o', 'x', 'x', '-', '-', '-', '-', '-', '-'], None),
                                  (['-', '-', '-', '-', 'x', 'x', '-', '-', '-'], None),
-                                 (['x', 'x', 'o', 'o', 'x', 'o', 'o', 'x', 'x'], None)
+                                 (['x', 'x', 'o', 'o', 'x', 'o', 'o', 'x', 'x'], None),
+                                 (['x', 'x', 'o', 'o', 'x', 'o', 'o', 'x', '-'], None)
 
                              ])
     def test_winner_by_rows(self, par_board, expectation):
@@ -94,8 +95,6 @@ class TestXO(object):
     def test_get_winner(self, par_board, expectation):
         winner = xo4_fcn.get_winner(par_board)
         assert winner == expectation
-
-
 
     @pytest.mark.parametrize('par_board',
                              [
